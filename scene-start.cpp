@@ -371,8 +371,8 @@ void drawMesh(SceneObject sceneObj) {
 
     // Set the model matrix - this should combine translation, rotation and scaling based on what's
     // in the sceneObj structure (see near the top of the program).
-    
-    //Part B - might need to check this
+
+    //TASK B, negative the x axis to match the demo video
     mat4 rotate = RotateX(-sceneObj.angles[0]) * RotateY(sceneObj.angles[1]) * RotateZ(sceneObj.angles[2]);
     mat4 model = Translate(sceneObj.loc) * Scale(sceneObj.scale) * rotate;
 
@@ -406,7 +406,7 @@ void display(void) {
     // Set the view matrix. To stat with this just moves the camera
     // backwards.  You'll need to add appropriate rotations.
 
-    //PART A
+    //TASK A
     mat4 rotate = RotateX(camRotUpAndOverDeg) * RotateY(camRotSidewaysDeg);
 
     view = Translate(0.0, 0.0, -viewDist) * rotate;
