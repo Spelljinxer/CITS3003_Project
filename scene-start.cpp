@@ -375,7 +375,7 @@ void drawMesh(SceneObject sceneObj) {
     //TASK B, negative the x axis to match the demo video
     mat4 rotate = RotateX(-sceneObj.angles[0]) * RotateY(sceneObj.angles[1]) * RotateZ(sceneObj.angles[2]);
     mat4 model = Translate(sceneObj.loc) * Scale(sceneObj.scale) * rotate;
-
+    // ENDOF TASK B
 
     // Set the model-view matrix for the shaders
     glUniformMatrix4fv(modelViewU, 1, GL_TRUE, view * model);
@@ -408,8 +408,8 @@ void display(void) {
 
     //TASK A
     mat4 rotate = RotateX(camRotUpAndOverDeg) * RotateY(camRotSidewaysDeg);
-
     view = Translate(0.0, 0.0, -viewDist) * rotate;
+    // ENDOF TASK A
 
     SceneObject lightObj1 = sceneObjs[1];
     vec4 lightPosition = view * lightObj1.loc;
@@ -473,6 +473,17 @@ static void adjustBlueBrightness(vec2 bl_br) {
     sceneObjs[toolObj].brightness += bl_br[1];
 }
 
+// TASK C
+static void adjust_ambient_diff(vec2 ad) {
+    sceneObjs[toolObj].ambient += ad[0];
+    sceneObjs[toolObj].diffuse += ad[1];
+}
+static void adjust_spec_shine(vec2 ss) {
+    sceneObjs[toolObj].specular += ss[0];
+    sceneObjs[toolObj].shine += ss[1];
+}
+//CONTINUE AT materialMenu()
+
 static void lightMenu(int id) {
     deactivateTool();
     if (id == 70) {
@@ -488,6 +499,8 @@ static void lightMenu(int id) {
         exit(1);
     }
 }
+
+
 
 static int createArrayMenu(int size, const char menuEntries[][128], void(*menuFn)(int)) {
     int nSubMenus = (size - 1) / 10 + 1;
@@ -520,6 +533,14 @@ static void materialMenu(int id) {
                          adjustBlueBrightness, mat2(1, 0, 0, 1));
     }
         // You'll need to fill in the remaining menu items here.
+    else if (id == 20)  
+    {
+        toolObj = currObject;
+        setToolCallbacks(adjust_ambient_diff, mat2(1, 0, 0, 1),
+                         adjust_spec_shine, mat2(1, 0, 0, 1));  //ENDOF TASK C
+    }   
+    
+        
     else {
         printf("Error in materialMenu\n");
     }
