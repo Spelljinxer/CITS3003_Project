@@ -665,10 +665,22 @@ void reshape(int width, int height) {
 
     GLfloat nearDist = 0.002; //adjusted for TASK D
 
-    projection = Frustum(-nearDist * (float) width / (float) height,
+    //TASK E
+    if ( height < width )
+    {
+        projection = Frustum(-nearDist * (float) width / (float) height,
                          nearDist * (float) width / (float) height,
                          -nearDist, nearDist,
                          nearDist, 100.0);
+    }
+    else
+    {
+        projection = Frustum(-nearDist, nearDist,
+                         -nearDist * (float) height / (float) width,
+                         nearDist * (float) height / (float) width,
+                         nearDist, 100.0);
+    }
+    //ENDOF TASK E
 }
 
 //----------------------------------------------------------------------------
