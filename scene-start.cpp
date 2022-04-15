@@ -372,7 +372,7 @@ void drawMesh(SceneObject sceneObj) {
     // Set the model matrix - this should combine translation, rotation and scaling based on what's
     // in the sceneObj structure (see near the top of the program).
     
-    //Part B
+    //Part B - might need to check this
     mat4 rotate = RotateX(-sceneObj.angles[0]) * RotateY(sceneObj.angles[1]) * RotateZ(sceneObj.angles[2]);
     mat4 model = Translate(sceneObj.loc) * Scale(sceneObj.scale) * rotate;
 
