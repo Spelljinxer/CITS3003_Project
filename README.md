@@ -1,4 +1,5 @@
-# change this later
+# https://docs.google.com/document/d/12rVGssnzk6AJdLMn3fFo2akXrbkeFcT995LljZNmTtc/edit?usp=sharing <-- google doc for drafting report as we go along
+change this later
 # Build Instructions:
 
 ## General Remarks
