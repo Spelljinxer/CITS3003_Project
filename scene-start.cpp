@@ -537,7 +537,7 @@ static void materialMenu(int id) {
     {
         toolObj = currObject;
         setToolCallbacks(adjust_ambient_diff, mat2(1, 0, 0, 1),
-                         adjust_spec_shine, mat2(1, 0, 0, 1));  //ENDOF TASK C
+                         adjust_spec_shine, mat2(1, 0, 0, 1));  //ENDOF TASK C 
     }   
     
         
@@ -653,6 +653,7 @@ void reshape(int width, int height) {
     windowHeight = height;
 
     glViewport(0, 0, width, height);
+    //PART D somewhere here??
 
     // You'll need to modify this so that the view is similar to that in the
     // sample solution.
