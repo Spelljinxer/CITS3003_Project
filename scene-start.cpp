@@ -653,7 +653,7 @@ void reshape(int width, int height) {
     windowHeight = height;
 
     glViewport(0, 0, width, height);
-    //PART D somewhere here??
+    
 
     // You'll need to modify this so that the view is similar to that in the
     // sample solution.
@@ -663,7 +663,8 @@ void reshape(int width, int height) {
     //         that the same part of the scene is visible across the width of
     //         the window.
 
-    GLfloat nearDist = 0.2;
+    GLfloat nearDist = 0.002; //adjusted for TASK D
+
     projection = Frustum(-nearDist * (float) width / (float) height,
                          nearDist * (float) width / (float) height,
                          -nearDist, nearDist,
