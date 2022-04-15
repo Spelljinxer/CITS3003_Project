@@ -401,10 +401,13 @@ void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     CheckError(); // May report a harmless GL_INVALID_OPERATION with GLEW on the first frame
 
-    // Set the view matrix. To start with this just moves the camera
+    // Set the view matrix. To stat with this just moves the camera
     // backwards.  You'll need to add appropriate rotations.
 
-    view = Translate(0.0, 0.0, -viewDist);
+    //PART A
+    mat4 rotate = RotateX(camRotUpAndOverDeg) * RotateY(camRotSidewaysDeg);
+
+    view = Translate(0.0, 0.0, -viewDist) * rotate;
 
     SceneObject lightObj1 = sceneObjs[1];
     vec4 lightPosition = view * lightObj1.loc;
