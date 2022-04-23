@@ -344,7 +344,7 @@ void init(void) {
     sceneObjs[2].loc = vec4(3.0, 1.0, 1.0, 1.0);
     sceneObjs[2].scale = 0.1;
     sceneObjs[2].texId = 0; // Plain texture
-    sceneObjs[2].brightness = 1.0; // The light's brightness is 5 times this (below).
+    sceneObjs[2].brightness = 0.2; // The light's brightness is 5 times this (below).
     // ENDOF TASK I
     addObject(rand() % numMeshes); // A test mesh
 
@@ -419,6 +419,9 @@ void display(void) {
     SceneObject lightObj1 = sceneObjs[1];
     vec4 lightPosition = view * lightObj1.loc;
 
+   
+
+
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition"),
                  1, lightPosition);
     CheckError();
@@ -434,6 +437,11 @@ void display(void) {
     //TASK I - CREATE SECOND LIGHT
     SceneObject lightObj2 = sceneObjs[2];
     vec4 lightPosition2 = rotate * lightObj2.loc;
+
+    lightObj2.brightness = 1.0;
+    lightObj2.scale = 1.2;
+
+
 
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition2"),
                  1, lightPosition2);
@@ -453,8 +461,8 @@ void display(void) {
     for (int i = 0; i < nObjects; i++) {
         SceneObject so = sceneObjs[i];
 
-        //vec3 rgb = so.rgb * lightObj1.rgb * so.brightness * lightObj1.brightness * 2.0;
-        vec3 rgb = so.rgb * so.brightness * 4.0;
+        vec3 rgb = so.rgb * lightObj1.rgb * so.brightness * lightObj1.brightness * 2.0;
+        
         glUniform3fv(glGetUniformLocation(shaderProgram, "AmbientProduct"), 1, so.ambient * rgb);
         CheckError();
         glUniform3fv(glGetUniformLocation(shaderProgram, "DiffuseProduct"), 1, so.diffuse * rgb);
