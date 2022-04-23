@@ -340,6 +340,13 @@ void init(void) {
     sceneObjs[1].texId = 0; // Plain texture
     sceneObjs[1].brightness = 0.2; // The light's brightness is 5 times this (below).
 
+    //TASK I
+    addObject(55); // Sphere for  light 2
+    sceneObjs[2].loc = vec4(2.5, 1.0, 1.0, 1.0);
+    sceneObjs[2].scale = 0.1;
+    sceneObjs[2].texId = 0; // Plain texture
+    sceneObjs[2].brightness = 0.2; // The light's brightness is 5 times this (below).
+    // ENDOF TASK I
     addObject(rand() % numMeshes); // A test mesh
 
     // We need to enable the depth test to discard fragments that
@@ -410,13 +417,31 @@ void display(void) {
     mat4 rotate = RotateX(camRotUpAndOverDeg) * RotateY(camRotSidewaysDeg);
     view = Translate(0.0, 0.0, -viewDist) * rotate;
     // ENDOF TASK A
-
     SceneObject lightObj1 = sceneObjs[1];
     vec4 lightPosition = view * lightObj1.loc;
 
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition"),
                  1, lightPosition);
     CheckError();
+
+    glUniform1f(glGetUniformLocation(shaderProgram, "LightBrightness"),
+                lightObj1.brightness);
+    CheckError();
+
+    //TASK I - CREATE SECOND LIGHT
+    SceneObject lightObj2 = sceneObjs[2];
+    vec4 lightPosition2 = rotate * lightObj2.loc;
+
+    glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition2"),
+                 1, lightPosition2);
+    CheckError();
+
+    glUniform1f(glGetUniformLocation(shaderProgram, "LightBrightness2"),
+                lightObj2.brightness);
+    CheckError();
+    // CONTINUE AT INIT FUNCTION + fStart.glsl
+
+
 
     for (int i = 0; i < nObjects; i++) {
         SceneObject so = sceneObjs[i];
@@ -494,7 +519,13 @@ static void lightMenu(int id) {
         toolObj = 1;
         setToolCallbacks(adjustRedGreen, mat2(1.0, 0, 0, 1.0),
                          adjustBlueBrightness, mat2(1.0, 0, 0, 1.0));
-    } else {
+    } else if (id == 80)
+    {
+        toolObj = 2;
+        setToolCallbacks(adjustLocXZ, camRotZ(),
+                         adjustBrightnessY, mat2(1.0, 0.0, 0.0, 10.0));
+    }
+    else {
         printf("Error in lightMenu\n");
         exit(1);
     }
