@@ -1,4 +1,3 @@
-
 #include "Angel.h"
 
 // Open Asset Importer header files (in ../../assimp--3.0.1270/include)
@@ -342,10 +341,10 @@ void init(void) {
 
     //TASK I
     addObject(55); // Sphere for  light 2
-    sceneObjs[2].loc = vec4(2.5, 1.0, 1.0, 1.0);
+    sceneObjs[2].loc = vec4(3.0, 1.0, 1.0, 1.0);
     sceneObjs[2].scale = 0.1;
     sceneObjs[2].texId = 0; // Plain texture
-    sceneObjs[2].brightness = 0.2; // The light's brightness is 5 times this (below).
+    sceneObjs[2].brightness = 1.0; // The light's brightness is 5 times this (below).
     // ENDOF TASK I
     addObject(rand() % numMeshes); // A test mesh
 
@@ -428,6 +427,10 @@ void display(void) {
                 lightObj1.brightness);
     CheckError();
 
+    //TASK J - duplicate this for light 2
+    glUniform3fv(glGetUniformLocation(shaderProgram, "LightColor"), 1, lightObj1.rgb);
+    CheckError();
+
     //TASK I - CREATE SECOND LIGHT
     SceneObject lightObj2 = sceneObjs[2];
     vec4 lightPosition2 = rotate * lightObj2.loc;
@@ -441,12 +444,17 @@ void display(void) {
     CheckError();
     // CONTINUE AT INIT FUNCTION + fStart.glsl
 
+    glUniform3fv(glGetUniformLocation(shaderProgram, "LightColor2"), 1, lightObj2.rgb);
+    CheckError();
+    
 
+   
 
     for (int i = 0; i < nObjects; i++) {
         SceneObject so = sceneObjs[i];
 
-        vec3 rgb = so.rgb * lightObj1.rgb * so.brightness * lightObj1.brightness * 2.0;
+        //vec3 rgb = so.rgb * lightObj1.rgb * so.brightness * lightObj1.brightness * 2.0;
+        vec3 rgb = so.rgb * so.brightness * 4.0;
         glUniform3fv(glGetUniformLocation(shaderProgram, "AmbientProduct"), 1, so.ambient * rgb);
         CheckError();
         glUniform3fv(glGetUniformLocation(shaderProgram, "DiffuseProduct"), 1, so.diffuse * rgb);
