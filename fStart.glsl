@@ -8,14 +8,14 @@ uniform sampler2D texture;
 //TASK G - moving variables to fragment shader
 uniform vec3 AmbientProduct, DiffuseProduct, SpecularProduct;
 uniform mat4 ModelView;
-uniform vec4 LightPosition;
 uniform float Shininess;
+uniform vec4 LightPosition;
 uniform float LightBrightness;
 uniform vec3 LightColor;
 
 //TASK I - SECOND LIGHT
 uniform vec4 LightPosition2;
-uniform vec3 LightBrightness2;
+uniform float LightBrightness2;
 uniform vec3 LightColor2;
 
 uniform mat4 Projection;
@@ -39,7 +39,7 @@ void main()
     vec3 N = normalize( (ModelView*vec4(normal, 0.0)).xyz );
 
     // Compute terms in the illumination equation
-    vec3 ambient = AmbientProduct * (LightColor * LightBrightness);
+    vec3 ambient = (LightColor * LightBrightness) + AmbientProduct;
     vec3 ambient2 = AmbientProduct * (LightColor2 * LightBrightness2);
 
 
