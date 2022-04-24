@@ -346,6 +346,15 @@ void init(void) {
     sceneObjs[2].texId = 0; // Plain texture
     sceneObjs[2].brightness = 0.2; // The light's brightness is 5 times this (below).
     // ENDOF TASK I
+
+    //TASK J 
+    addObject(55); // Sphere for  light 2
+    sceneObjs[3].loc = vec4(3.0, 1.0, 1.0, 1.0);
+    sceneObjs[3].scale = 0.1;
+    sceneObjs[3].texId = 0; // Plain texture
+    sceneObjs[3].brightness = 0.2; // The light's brightness is 5 times this (below).
+
+
     addObject(rand() % numMeshes); // A test mesh
 
     // We need to enable the depth test to discard fragments that
@@ -419,44 +428,52 @@ void display(void) {
     SceneObject lightObj1 = sceneObjs[1];
     vec4 lightPosition = view * lightObj1.loc;
 
-   
+    lightObj1.scale = 1.0;
+    lightObj1.brightness = 0.9;
 
 
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition"),
                  1, lightPosition);
     CheckError();
-
     glUniform1f(glGetUniformLocation(shaderProgram, "LightBrightness"),
                 lightObj1.brightness);
     CheckError();
-
-    //TASK J - duplicate this for light 2
     glUniform3fv(glGetUniformLocation(shaderProgram, "LightColor"), 1, lightObj1.rgb);
     CheckError();
+    
 
     //TASK I - CREATE SECOND LIGHT
     SceneObject lightObj2 = sceneObjs[2];
-    vec4 lightPosition2 = rotate * lightObj2.loc;
+    vec4 lightPosition2 = rotate * lightObj2.loc; //directional so multiply the camera rotation by the light location
 
-    lightObj2.brightness = 1.0;
-    lightObj2.scale = 1.2;
+    lightObj2.brightness = 2.0;
+    lightObj2.scale = 2.0;
 
 
 
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition2"),
                  1, lightPosition2);
     CheckError();
-
     glUniform1f(glGetUniformLocation(shaderProgram, "LightBrightness2"),
                 lightObj2.brightness);
     CheckError();
-    // CONTINUE AT INIT FUNCTION + fStart.glsl
-
     glUniform3fv(glGetUniformLocation(shaderProgram, "LightColor2"), 1, lightObj2.rgb);
     CheckError();
-    
+    // CONTINUE AT INIT FUNCTION + fStart.glsl
 
-   
+    //TASK J - SPOTLIGHT
+    SceneObject lightObj3 = sceneObjs[3];
+    vec4 lightPosition3 = view * lightObj3.loc;
+
+   glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition3"),
+                1, lightPosition3);
+    CheckError();
+    glUniform1f(glGetUniformLocation(shaderProgram, "LightBrightness3"),
+                lightObj3.brightness);
+    glUniform3fv(glGetUniformLocation(shaderProgram, "LightColor3"), 1, lightObj3.rgb);
+    CheckError();
+    glUniform4fv(glGetUniformLocation(shaderProgram, "LightLocation3"), 1, lightObj3.loc);
+    CheckError();
 
     for (int i = 0; i < nObjects; i++) {
         SceneObject so = sceneObjs[i];
@@ -534,10 +551,15 @@ static void lightMenu(int id) {
     } else if (id >= 71 && id <= 74) {
         toolObj = 1;
         setToolCallbacks(adjustRedGreen, mat2(1.0, 0, 0, 1.0),
-                         adjustBlueBrightness, mat2(1.0, 0, 0, 1.0));
-    } else if (id == 80)
+                         adjustBlueBrightness, mat2(1.0, 0, 0, 10.0));
+    } else if (id == 80) //TASK i LIGHT
     {
         toolObj = 2;
+        setToolCallbacks(adjustLocXZ, camRotZ(),
+                         adjustBrightnessY, mat2(1.0, 0.0, 0.0, 10.0));
+    } else if (id == 90) //TASK J SPOTLIGHT
+    {
+        toolObj = 3;
         setToolCallbacks(adjustLocXZ, camRotZ(),
                          adjustBrightnessY, mat2(1.0, 0.0, 0.0, 10.0));
     }
@@ -675,6 +697,9 @@ static void makeMenu() {
     glutAddMenuEntry("R/G/B/All Light 1", 71);
     glutAddMenuEntry("Move Light 2", 80);
     glutAddMenuEntry("R/G/B/All Light 2", 81);
+
+    glutAddMenuEntry("Move Light 3", 90);
+
 
     glutCreateMenu(mainmenu);
     glutAddMenuEntry("Rotate/Move Camera", 50);
