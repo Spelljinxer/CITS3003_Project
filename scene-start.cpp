@@ -349,7 +349,7 @@ void init(void) {
 
     //TASK J 
     addObject(55); // Sphere for  light 2
-    sceneObjs[3].loc = vec4(3.0, 1.0, 1.0, 1.0);
+    sceneObjs[3].loc = vec4(2.5, 1.0, 1.0, 1.0);
     sceneObjs[3].scale = 0.1;
     sceneObjs[3].texId = 0; // Plain texture
     sceneObjs[3].brightness = 0.2; // The light's brightness is 5 times this (below).
@@ -414,7 +414,7 @@ void drawMesh(SceneObject sceneObj) {
 
 void display(void) {
     numDisplayCalls++;
-
+  
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     CheckError(); // May report a harmless GL_INVALID_OPERATION with GLEW on the first frame
 
@@ -428,8 +428,8 @@ void display(void) {
     SceneObject lightObj1 = sceneObjs[1];
     vec4 lightPosition = view * lightObj1.loc;
 
-    lightObj1.scale = 1.0;
-    lightObj1.brightness = 0.9;
+    lightObj1.scale = 0.5;
+    lightObj1.brightness = 1.0;
 
 
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition"),
@@ -446,8 +446,8 @@ void display(void) {
     SceneObject lightObj2 = sceneObjs[2];
     vec4 lightPosition2 = rotate * lightObj2.loc; //directional so multiply the camera rotation by the light location
 
-    lightObj2.brightness = 2.0;
-    lightObj2.scale = 2.0;
+    lightObj2.brightness = 1.0;
+    lightObj2.scale = 1.0;
 
 
 
@@ -465,14 +465,17 @@ void display(void) {
     SceneObject lightObj3 = sceneObjs[3];
     vec4 lightPosition3 = view * lightObj3.loc;
 
-   glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition3"),
+    lightObj3.brightness = 2.0;
+    lightObj3.scale = 2.0;
+
+    glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition3"),
                 1, lightPosition3);
     CheckError();
     glUniform1f(glGetUniformLocation(shaderProgram, "LightBrightness3"),
                 lightObj3.brightness);
     glUniform3fv(glGetUniformLocation(shaderProgram, "LightColor3"), 1, lightObj3.rgb);
     CheckError();
-    glUniform4fv(glGetUniformLocation(shaderProgram, "LightLocation3"), 1, lightObj3.loc);
+    glUniform4fv(glGetUniformLocation(shaderProgram, "LightLoc3"), 1, lightObj3.loc);
     CheckError();
 
     for (int i = 0; i < nObjects; i++) {
@@ -698,6 +701,7 @@ static void makeMenu() {
     glutAddMenuEntry("Move Light 2", 80);
     glutAddMenuEntry("R/G/B/All Light 2", 81);
 
+    //TASK J SPOTLIGHT
     glutAddMenuEntry("Move Light 3", 90);
 
 
