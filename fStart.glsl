@@ -93,15 +93,15 @@ void main()
     float light_distance_3 = 0.1 + length(Lvec3);
     float light3 = 1.0/(1.0 + 1.0*length(Lvec3) + light_distance_3);
 
-    float theta = 3.14159265359/180.0*12.5;
-    float intensity = clamp(theta, 0.0, 0.01);
-    diffuse3 *= intensity;
-    specular3 *= intensity;
-
+    // float theta = 3.14159265359/180.0*12.5;
+    // float intensity = clamp(theta, 0.0, 0.01);
+    // diffuse3 *= intensity;
+    // specular3 *= intensity;
 
     // globalAmbient is independent of distance from the light source
     vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
     color.rgb = globalAmbient + ((ambient + diffuse + specular) * light) + ambient2 + diffuse2 + (ambient3 + diffuse3) * light3;
+    
     color.a = 1.0;
 
     gl_FragColor = color * texture2D( texture, texCoord * texScale) + vec4((specular * light), 0.0) + vec4((specular2 * light2), 0.0) + vec4((specular3 * light3), 0.0);
