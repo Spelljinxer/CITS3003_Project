@@ -603,6 +603,37 @@ static void adjustAngleZTexscale(vec2 az_ts) {
     sceneObjs[currObject].texScale += az_ts[1];
 }
 
+//TASK J - DELETE OBJECT
+static void delete_object(int object)
+{
+    if (object < 0 || object >= nObjects) //check if we do have an object in scene 
+    {
+        printf("Could not delete the object. Maybe something went wrong?\n");
+    }
+    for (int i = object; i < nObjects - 1; i++)
+    {
+        sceneObjs[i] = sceneObjs[currObject]; 
+    }
+    nObjects--;
+    glutPostRedisplay(); //redraw scene
+}
+// TASK J - DUPLICATE OBJECT
+static void duplicate_object(int object)
+{
+    if(nObjects == maxObjects) //check if we have exceeded the maximum amount of objects
+    {
+        printf("Exceeded the maximum amount of objects\n");
+        return;
+    }
+    sceneObjs[nObjects] = sceneObjs[object]; //copies the object
+    toolObj = currObject = nObjects++; //sets both the tool and the current object to the new object, increment total number of objects
+    setToolCallbacks(adjustLocXZ, camRotZ(),
+                     adjustBrightnessY, mat2(1.0, 0.0, 0.0, 10.0));
+                    
+    glutPostRedisplay(); //redraw scene
+}
+
+
 static void mainmenu(int id) {
     deactivateTool();
     if (id == 41 && currObject >= 0) {
@@ -616,6 +647,16 @@ static void mainmenu(int id) {
         setToolCallbacks(adjustAngleYX, mat2(400, 0, 0, -400),
                          adjustAngleZTexscale, mat2(400, 0, 0, 15));
     }
+    //TASK J 
+    if (id == 98 && currObject >= 0)
+    {
+        duplicate_object(currObject);
+    }
+    if(id == 97 && currObject >= 0)
+    {
+        delete_object(currObject);  
+    }
+
     if (id == 99) exit(0);
 }
 
@@ -644,6 +685,11 @@ static void makeMenu() {
     glutAddSubMenu("Texture", texMenuId);
     glutAddSubMenu("Ground Texture", groundMenuId);
     glutAddSubMenu("Lights", lightMenuId);
+
+    //TASK J - DELETE AND DUPLICATE OBJECTS
+    glutAddMenuEntry("Delete Object", 97);
+    glutAddMenuEntry("Duplicate Object", 98);
+
     glutAddMenuEntry("EXIT", 99);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
