@@ -1,9 +1,9 @@
 varying vec3 position;
 varying vec3 normal;
 varying vec2 texCoord;  // The third coordinate is always 0.0 and is discarded
-
-vec4 color;
+uniform float texScale;
 uniform sampler2D texture;
+vec4 color;
 
 //TASK G - moving variables to fragment shader
 uniform vec3 AmbientProduct, DiffuseProduct, SpecularProduct;
@@ -17,9 +17,6 @@ uniform vec3 LightColor;
 uniform vec4 LightPosition2;
 uniform float LightBrightness2;
 uniform vec3 LightColor2;
-
-uniform mat4 Projection;
-uniform float texScale;
 
 //TASK J - SPOTLIGHT
 uniform vec4 LightPosition3;
