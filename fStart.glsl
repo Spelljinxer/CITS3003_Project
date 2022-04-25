@@ -60,13 +60,11 @@ void main()
     vec3  diffuse3 = Kd3 * (LightColor3 * LightBrightness3) * DiffuseProduct;
 
     float Ks = pow( max(dot(N, H), 0.0), Shininess );
-    //vec3 specular = Ks * LightBrightness * SpecularProduct;
     float Ks2 = pow( max(dot(N, H2), 0.0), Shininess );
-    //vec3 specular2 = Ks2 * LightBrightness2 * SpecularProduct;
     float Ks3 = pow( max(dot(N, H3), 0.0), Shininess );
     vec3 specular3 = Ks3 * LightBrightness3 * SpecularProduct;
     
-    //specular3 = clamp(specular3, 0.0, 1.0);
+    
 
     vec3 brightness = vec3(5,5,5);
     vec3 specular = Ks * (SpecularProduct + brightness);
@@ -95,17 +93,10 @@ void main()
     float light_distance_3 = 0.1 + length(Lvec3);
     float light3 = 1.0/(1.0 + 1.0*length(Lvec3) + light_distance_3);
 
-    // float theta = 3.14159265359/180.0*12.5;
-    // float intensity = clamp(theta, 0.0, 0.01);
-    // diffuse3 *= intensity;
-    // specular3 *= intensity;
-
-    
-
     // globalAmbient is independent of distance from the light source
     vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
-    //color.rgb = globalAmbient + ((ambient + diffuse) / light_distance) + specular + light + light2;
-        color.rgb = globalAmbient + ((ambient + diffuse + specular) * light) + ambient2 + diffuse2 + (ambient3 + diffuse3) * light3;
+    
+    color.rgb = globalAmbient + ((ambient + diffuse + specular) * light) + ambient2 + diffuse2 + (ambient3 + diffuse3) * light3;
     color.a = 1.0;
 
     gl_FragColor = color * texture2D(texture, texCoord * texScale);
