@@ -1,9 +1,12 @@
 varying vec3 position;
 varying vec3 normal;
 varying vec2 texCoord;  // The third coordinate is always 0.0 and is discarded
-uniform float texScale;
-uniform sampler2D texture;
+
 vec4 color;
+uniform sampler2D texture;
+
+uniform mat4 Projection;
+uniform float texScale;
 
 //TASK G - moving variables to fragment shader
 uniform vec3 AmbientProduct, DiffuseProduct, SpecularProduct;
@@ -29,8 +32,8 @@ void main()
     // The vector to the light from the vertex   
     vec3 Lvec = LightPosition.xyz - position;
 
-    vec3 Lvec2 = LightPosition2.xyz - position;
-    
+    vec3 Lvec2 = LightPosition2.xyz;
+   
     vec3 Lvec3 = LightPosition3.xyz - position;
 
     // Unit direction vectors for Blinn-Phong shading calculation
@@ -39,8 +42,8 @@ void main()
     vec3 L3 = normalize( Lvec3 );
     vec3 E = normalize( -position);   // Direction to the eye/camera
     vec3 H = normalize( L + E );  // Halfway vector
-    vec3 H2 = normalize(L2 + E);
-    vec3 H3 = normalize(L3 + E);
+    vec3 H2 = normalize( L2 + E);
+    vec3 H3 = normalize( L3 + E );
 
     // Transform vertex normal into eye coordinates (assumes scaling
     // is uniform across dimensions)
@@ -60,12 +63,12 @@ void main()
     vec3  diffuse3 = Kd3 * (LightColor3 * LightBrightness3) * DiffuseProduct;
 
     float Ks = pow( max(dot(N, H), 0.0), Shininess );
+    //vec3 specular = Ks * LightBrightness * SpecularProduct;
     float Ks2 = pow( max(dot(N, H2), 0.0), Shininess );
+    //vec3 specular2 = Ks2 * LightBrightness2 * SpecularProduct;
     float Ks3 = pow( max(dot(N, H3), 0.0), Shininess );
     vec3 specular3 = Ks3 * LightBrightness3 * SpecularProduct;
     
-    
-
     vec3 brightness = vec3(5,5,5);
     vec3 specular = Ks * (SpecularProduct + brightness);
     vec3 specular2 = Ks2 * (SpecularProduct + brightness);
@@ -93,9 +96,10 @@ void main()
     float light_distance_3 = 0.1 + length(Lvec3);
     float light3 = 1.0/(1.0 + 1.0*length(Lvec3) + light_distance_3);
 
+
     // globalAmbient is independent of distance from the light source
     vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
-    
+    //color.rgb = globalAmbient + ((ambient + diffuse) / light_distance) + specular2 + diffuse2;
     color.rgb = globalAmbient + ((ambient + diffuse + specular) * light) + ambient2 + diffuse2 + (ambient3 + diffuse3) * light3;
     color.a = 1.0;
 
