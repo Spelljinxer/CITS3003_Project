@@ -348,7 +348,7 @@ void init(void) {
     // ENDOF TASK I
 
     //TASK J 
-    addObject(55); // Sphere for  light 2
+    addObject(55); // Sphere for  light 3
     sceneObjs[3].loc = vec4(2.5, 1.0, 1.0, 1.0);
     sceneObjs[3].scale = 0.1;
     sceneObjs[3].texId = 0; // Plain texture
@@ -443,14 +443,15 @@ void display(void) {
     
 
     //TASK I - CREATE SECOND LIGHT
+    //mat4 directional_rotate = RotateX(camRotUpAndOverDeg) * RotateY(camRotSidewaysDeg);
     SceneObject lightObj2 = sceneObjs[2];
     vec4 lightPosition2 = rotate * lightObj2.loc; //directional so multiply the camera rotation by the light location
 
     lightObj2.brightness = 1.0;
-    lightObj2.scale = 1.0;
+    //lightObj2.scale = 1.0;
 
-
-
+    lightPosition2.y = -lightPosition2.y; //inverse the y-axis to match demo
+    
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition2"),
                  1, lightPosition2);
     CheckError();
@@ -459,6 +460,8 @@ void display(void) {
     CheckError();
     glUniform3fv(glGetUniformLocation(shaderProgram, "LightColor2"), 1, lightObj2.rgb);
     CheckError();
+
+
     // CONTINUE AT INIT FUNCTION + fStart.glsl
 
     //TASK J - SPOTLIGHT
