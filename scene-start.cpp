@@ -625,9 +625,9 @@ static void materialMenu(int id) {
     else if (id == 20)  
     {
         toolObj = currObject;
-        setToolCallbacks(adjust_ambient_diff, mat2(1, 0, 0, 2),
-                         adjust_spec_shine, mat2(1, 0, 0, 2));  //ENDOF TASK C 
-    }   
+        setToolCallbacks(adjust_ambient_diff, mat2(1, 0, 0, 1),
+                         adjust_spec_shine, mat2(5, 0, 0, 5));  //ENDOF TASK C 
+    } 
 
         
     else {
