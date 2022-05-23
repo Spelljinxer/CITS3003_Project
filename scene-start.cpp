@@ -470,12 +470,12 @@ void display(void) {
     SceneObject lightObj3 = sceneObjs[3];
     vec4 lightPosition3 = view * lightObj3.loc;
     //lightPosition3.y = -lightPosition3.y;
-    float light_pitch = lightObj3.angles[1];
-    float light_yaw = lightObj3.angles[2];
+    float light_lateral = lightObj3.angles[1];
+    float light_vertical = lightObj3.angles[2];
 
-    glUniform1f(glGetUniformLocation(shaderProgram, "pitch"), light_pitch);
+    glUniform1f(glGetUniformLocation(shaderProgram, "lateral"), light_lateral);
     CheckError();
-    glUniform1f(glGetUniformLocation(shaderProgram, "yaw"), light_yaw);
+    glUniform1f(glGetUniformLocation(shaderProgram, "vertical"), light_vertical);
     CheckError();
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition3"),
                 1, lightPosition3);
