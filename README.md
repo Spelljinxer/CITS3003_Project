@@ -7,7 +7,6 @@ Team Member 2:	[Nathan Eden (22960674)](https://github.com/NEDEN249)
 #
 
 > The Project was completed, compiled and executed on a Linux-based machine using the Ubuntu distro. We collaborated using Github and Discord as a medium for communication. 
-#
 # System Compilation And Dependencies:
 	Dependency:
 		sudo apt install cmake libxmu-dev g++ libx11-dev libgl1-mesa-dev libglu1-mesa-de
@@ -15,8 +14,7 @@ Team Member 2:	[Nathan Eden (22960674)](https://github.com/NEDEN249)
 		cmake --build cmake-build
 	Execution:
 		./start_scene
-#
-Our OS specific details are as follows:
+# OS specific details
 
 Reiden Rufin : <br>
 - CPU - Ryzen 5 3600<br>
