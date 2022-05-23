@@ -3,7 +3,7 @@ varying vec3 normal;
 varying vec2 texCoord;  // The third coordinate is always 0.0 and is discarded
 
 vec4 color;
-vec4 color3;
+vec4 colour_3;
 uniform sampler2D texture;
 
 uniform mat4 Projection;
@@ -73,7 +73,7 @@ void main()
     float Ks2 = pow( max(dot(N, H2), 0.0), Shininess );
     float Ks3 = pow( max(theta, 0.0), Shininess );
 
-    vec3 brightness = vec3(5,5,5);
+    vec3 brightness = vec3(2,2,2);
     vec3 specular = Ks * (SpecularProduct + brightness);
     vec3 specular2 = Ks2 * (SpecularProduct + brightness);
     vec3 specular3 = Ks3 * LightBrightness3 * SpecularProduct;
@@ -90,16 +90,16 @@ void main()
 
     //TASK F 
     float light_distance = 0.1 + length(Lvec);
-    float light = 1.0/(1.0 + 1.0*length(Lvec) + light_distance);
+    float light = 1.0/(1.0 + 1.0*length(Lvec) + light_distance * light_distance);
     //ENDOF TASK F
 
     //Task J
     float light_distance_3 = 0.1 + length(Lvec3);
     if (theta > 0.9){
-        color3 = vec4(ambient3 + light_distance_3 * (diffuse3), 1.0);
+        colour_3 = vec4(ambient3 + light_distance_3 * (diffuse3), 1.0);
     }
     else{
-        color3 = vec4(ambient3, 1.0);
+        colour_3 = vec4(ambient3, 1.0);
     }
     //End Task J
     
@@ -107,8 +107,7 @@ void main()
     color.rgb = globalAmbient + ((ambient + diffuse + specular) * light) + ambient2 + diffuse2;
     color.a = 1.0;
     
-    gl_FragColor = (color + color3) * texture2D(texture, texCoord * texScale);
+    gl_FragColor = (color + colour_3) * texture2D(texture, texCoord * texScale);
 
 }
-
 
