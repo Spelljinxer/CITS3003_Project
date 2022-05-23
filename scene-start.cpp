@@ -387,10 +387,9 @@ void drawMesh(SceneObject sceneObj) {
     // Set the model matrix - this should combine translation, rotation and scaling based on what's
     // in the sceneObj structure (see near the top of the program).
 
-    //TASK B, negative the x axis to match the demo video
-    mat4 rotate = RotateX(-sceneObj.angles[0]) * RotateY(sceneObj.angles[1]) * RotateZ(sceneObj.angles[2]);
+    //TASK B, negative the x axis and z axis to match the demo video
+    mat4 rotate = RotateZ(sceneObj.angles[2]) * RotateY(sceneObj.angles[1]) * RotateX(-sceneObj.angles[0]) ;
     mat4 model = Translate(sceneObj.loc) * Scale(sceneObj.scale) * rotate;
-    // ENDOF TASK B
 
     // Set the model-view matrix for the shaders
     glUniformMatrix4fv(modelViewU, 1, GL_TRUE, view * model);
@@ -422,7 +421,9 @@ void display(void) {
     // backwards.  You'll need to add appropriate rotations.
 
     //TASK A
-    mat4 rotate = RotateX(camRotUpAndOverDeg) * RotateY(camRotSidewaysDeg);
+    mat4 rotate_cam_x = RotateX(camRotUpAndOverDeg);
+    mat4 rotate_cam_y = RotateY(camRotSidewaysDeg);
+    mat4 rotate = rotate_cam_x * rotate_cam_y;
     view = Translate(0.0, 0.0, -viewDist) * rotate;
     // ENDOF TASK A
     SceneObject lightObj1 = sceneObjs[1];
@@ -444,12 +445,13 @@ void display(void) {
     
 
     //TASK I - CREATE SECOND LIGHT
-    //mat4 directional_rotate = RotateX(camRotUpAndOverDeg) * RotateY(camRotSidewaysDeg);
     SceneObject lightObj2 = sceneObjs[2];
     vec4 lightPosition2 = rotate * lightObj2.loc; //directional so multiply the camera rotation by the light location
 
     lightObj2.brightness = 1.0;
-    //lightObj2.scale = 1.0;
+    lightObj2.scale = 1.0;
+
+    //lightPosition2.y = -lightPosition2.y; //inverse the y-axis to match demo
     
     
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition2"),
@@ -480,8 +482,6 @@ void display(void) {
     glUniform1f(glGetUniformLocation(shaderProgram, "LightBrightness3"),
                 lightObj3.brightness);
     glUniform3fv(glGetUniformLocation(shaderProgram, "LightColor3"), 1, lightObj3.rgb);
-    CheckError();
-    glUniform4fv(glGetUniformLocation(shaderProgram, "LightLoc3"), 1, lightObj3.loc);
     CheckError();
 
     for (int i = 0; i < nObjects; i++) {
@@ -541,11 +541,13 @@ static void adjustBlueBrightness(vec2 bl_br) {
 }
 
 // TASK C
-static void adjust_ambient_diff(vec2 ad) {
+static void adjust_ambient_diff(vec2 ad)
+{
     sceneObjs[toolObj].ambient += ad[0];
     sceneObjs[toolObj].diffuse += ad[1];
 }
-static void adjust_spec_shine(vec2 ss) {
+static void adjust_spec_shine(vec2 ss)
+{
     sceneObjs[toolObj].specular += ss[0];
     sceneObjs[toolObj].shine += ss[1];
 }
@@ -623,8 +625,8 @@ static void materialMenu(int id) {
     else if (id == 20)  
     {
         toolObj = currObject;
-        setToolCallbacks(adjust_ambient_diff, mat2(2.0, 0, 0, 10.0),
-                         adjust_spec_shine, mat2(2.0, 0, 0, 10.0));  //ENDOF TASK C 
+        setToolCallbacks(adjust_ambient_diff, mat2(1, 0, 0, 2),
+                         adjust_spec_shine, mat2(1, 0, 0, 2));  //ENDOF TASK C 
     }   
 
         
@@ -806,17 +808,16 @@ void reshape(int width, int height) {
     //TASK E
     if ( height < width )
     {
-        projection = Frustum(-nearDist * (float) width / (float) height,
-                         nearDist * (float) width / (float) height,
-                         -nearDist, nearDist,
-                         nearDist, 100.0);
+        projection = Frustum(-nearDist * (float) width / (float) height, 
+                              nearDist * (float) width / (float) height,
+                             -nearDist, nearDist,  nearDist, 100.0);
     }
     else
     {
         projection = Frustum(-nearDist, nearDist,
-                         -nearDist * (float) height / (float) width,
-                         nearDist * (float) height / (float) width,
-                         nearDist, 100.0);
+                             -nearDist * (float) height / (float) width,
+                            nearDist * (float) height / (float) width,
+                            nearDist, 100.0);
     }
     //ENDOF TASK E
 }
