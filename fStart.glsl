@@ -96,18 +96,18 @@ void main()
     //Task J
     float light_distance_3 = 0.1 + length(Lvec3);
     if (theta > 0.9){
-        colour_3 = vec4(ambient3 + light_distance_3 * (diffuse3), 1.0);
+        color3 = vec4(ambient3 + light_distance_3 * (diffuse3), 1.0);
     }
     else{
-        colour_3 = vec4(ambient3, 1.0);
+        color3 = vec4(ambient3, 1.0);
     }
     //End Task J
     
     vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
-    color.rgb = globalAmbient + ((ambient + diffuse + specular) * light) + ambient2 + diffuse2;// + (ambient3 + diffuse3) * light3;
+    color.rgb = globalAmbient + ((ambient + diffuse + specular) * light) + ambient2 + diffuse2;
     color.a = 1.0;
     
-    gl_FragColor = (color + colour_3) * texture2D(texture, texCoord * texScale);
+    gl_FragColor = (color + color3) * texture2D(texture, texCoord * texScale);
 
 }
 
