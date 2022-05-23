@@ -1,6 +1,6 @@
 #include "Angel.h"
 
-// Open Asset Importer header files (in ../../assimp--3.0.1270/include)
+// Open Asset Importer header files (in ../../assimpf-3.0.1270/include)
 // This is a standard open source library for loading meshes, see gnatidread.h
 #include <assimp/cimport.h>
 #include <assimp/scene.h>
@@ -349,7 +349,7 @@ void init(void) {
 
     //TASK J 
     addObject(55); // Sphere for  light 3
-    sceneObjs[3].loc = vec4(2.5, 1.0, 1.0, 1.0);
+    sceneObjs[3].loc = vec4(2.0, 3.0, 1.0, 1.0);
     sceneObjs[3].scale = 0.1;
     sceneObjs[3].texId = 0; // Plain texture
     sceneObjs[3].brightness = 0.2; // The light's brightness is 5 times this (below).
@@ -427,7 +427,8 @@ void display(void) {
     // ENDOF TASK A
     SceneObject lightObj1 = sceneObjs[1];
     vec4 lightPosition = view * lightObj1.loc;
-
+    mat4 yaw = RotateY(camRotSidewaysDeg);
+    mat4 pitch = RotateX(camRotUpAndOverDeg);
     lightObj1.scale = 0.5;
     lightObj1.brightness = 1.0;
 
@@ -452,6 +453,7 @@ void display(void) {
 
     lightPosition2.y = -lightPosition2.y; //inverse the y-axis to match demo
     
+    
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition2"),
                  1, lightPosition2);
     CheckError();
@@ -467,9 +469,9 @@ void display(void) {
     //TASK J - SPOTLIGHT
     SceneObject lightObj3 = sceneObjs[3];
     vec4 lightPosition3 = view * lightObj3.loc;
-
-    lightObj3.brightness = 2.0;
-    lightObj3.scale = 2.0;
+    lightPosition3.y = -lightPosition3.y;
+    float light_pitch = lightObj3.angles[1];
+    float light_yaw = lightObj3.angles[2];
 
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition3"),
                 1, lightPosition3);
@@ -611,10 +613,10 @@ static void materialMenu(int id) {
     else if (id == 20)  
     {
         toolObj = currObject;
-        setToolCallbacks(adjust_ambient_diff, mat2(1, 0, 0, 1),
-                         adjust_spec_shine, mat2(1, 0, 0, 1));  //ENDOF TASK C 
+        setToolCallbacks(adjust_ambient_diff, mat2(2.0, 0, 0, 10.0),
+                         adjust_spec_shine, mat2(2.0, 0, 0, 10.0));  //ENDOF TASK C 
     }   
-    
+
         
     else {
         printf("Error in materialMenu\n");
@@ -706,6 +708,7 @@ static void makeMenu() {
 
     //TASK J SPOTLIGHT
     glutAddMenuEntry("Move Light 3", 90);
+    glutAddMenuEntry("Change Direction", 91); //davids guide: two submenus Move and Change Direction
 
 
     glutCreateMenu(mainmenu);
