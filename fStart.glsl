@@ -75,6 +75,7 @@ void main()
     vec3 brightness = vec3(5,5,5);
     vec3 specular = Ks * (SpecularProduct + brightness);
     vec3 specular2 = Ks2 * (SpecularProduct + brightness);
+     //vec3 specular3 = Ks3 * (SpecularProduct + brightness);
 
 
     if (dot(L, N) < 0.0 ) {
@@ -83,7 +84,7 @@ void main()
     if(dot(L2, N) < 0.0) {
         specular2 = vec3(0.0, 0.0, 0.0);
     }
-    if(dot(L3, N) < 0.0) {
+    if(theta < 0.0) {
         specular3 = vec3(0.0, 0.0, 0.0);
     }
 
@@ -100,12 +101,13 @@ void main()
     
     vec3 l3pos = LightPosition3.xyz;
 
-
+    //float dist_3 = sqrt((l3pos[0] - position[0])*(l3pos[0]-position[0]) + (l3pos[1] - position[1])*(l3pos[1]-position[2])*(l3pos[2]-position[2]));
+    //float distscale_3 = 1.0/(1.0+0.14*dist_3+0.07*dist_3*dist_3);
     if (theta > 0.9){
-       colour_3 = vec4(ambient3 + light_distance_3 * (diffuse3), 1.0) + light3;
+        colour_3 = vec4(ambient3 + light_distance_3 * (diffuse3), 1.0);
     }
     else{
-        colour_3 = vec4(ambient3, 1.0)+light3;//maybe this decreases brightness of surrounding fragments
+        colour_3 = vec4(ambient3, 1.0);//maybe this decreases brightness of surrounding fragments
     }
 
     vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
