@@ -9,6 +9,7 @@ varying vec2 texCoord;
 
 uniform mat4 ModelView;
 uniform mat4 Projection;
+varying vec3 pos;
 
 void main()
 {
@@ -16,7 +17,7 @@ void main()
     vec4 vpos = vec4(vPosition, 1.0);
 
     // Transform vertex position into eye coordinates
-    vec3 pos = (ModelView * vpos).xyz;
+    pos = (ModelView * vpos).xyz;
     
     gl_Position = Projection * ModelView * vpos;
 
