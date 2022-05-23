@@ -46,6 +46,7 @@ void main()
 
     float light_distance = 0.1 + length(Lvec);
     float light = 1.0/(1.0 + 1.0*length(Lvec) + light_distance * light_distance);
+
     // globalAmbient is independent of distance from the light source
     vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
 
