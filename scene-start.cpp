@@ -450,8 +450,6 @@ void display(void) {
 
     lightObj2.brightness = 1.0;
     //lightObj2.scale = 1.0;
-
-    lightPosition2.y = -lightPosition2.y; //inverse the y-axis to match demo
     
     
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition2"),
@@ -469,7 +467,6 @@ void display(void) {
     //TASK J - SPOTLIGHT
     SceneObject lightObj3 = sceneObjs[3];
     vec4 lightPosition3 = view * lightObj3.loc;
-    //lightPosition3.y = -lightPosition3.y;
     float light_lateral = lightObj3.angles[1];
     float light_vertical = lightObj3.angles[2];
 
