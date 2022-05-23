@@ -432,7 +432,7 @@ void display(void) {
     lightObj1.scale = 0.5;
     lightObj1.brightness = 1.0;
 
-
+    
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition"),
                  1, lightPosition);
     CheckError();
@@ -469,10 +469,14 @@ void display(void) {
     //TASK J - SPOTLIGHT
     SceneObject lightObj3 = sceneObjs[3];
     vec4 lightPosition3 = view * lightObj3.loc;
-    lightPosition3.y = -lightPosition3.y;
+    //lightPosition3.y = -lightPosition3.y;
     float light_pitch = lightObj3.angles[1];
     float light_yaw = lightObj3.angles[2];
 
+    glUniform1f(glGetUniformLocation(shaderProgram, "pitch"), light_pitch);
+    CheckError();
+    glUniform1f(glGetUniformLocation(shaderProgram, "yaw"), light_yaw);
+    CheckError();
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition3"),
                 1, lightPosition3);
     CheckError();
@@ -550,6 +554,11 @@ static void adjust_spec_shine(vec2 ss) {
 }
 //CONTINUE AT materialMenu()
 
+static void RotateObj(vec2 xz){
+    sceneObjs[toolObj].angles[2]+=-20*xz[0];
+    sceneObjs[toolObj].angles[1] +=-20*xz[1];
+}
+
 static void lightMenu(int id) {
     deactivateTool();
     if (id == 70) {
@@ -570,6 +579,10 @@ static void lightMenu(int id) {
         toolObj = 3;
         setToolCallbacks(adjustLocXZ, camRotZ(),
                          adjustBrightnessY, mat2(1.0, 0.0, 0.0, 10.0));
+    }
+    else if (id == 91){
+        toolObj = 3;
+        setToolCallbacks(RotateObj, camRotZ(), adjustBrightnessY, mat2(1.0, 0.0, 0.0, 10.0));
     }
     else {
         printf("Error in lightMenu\n");
