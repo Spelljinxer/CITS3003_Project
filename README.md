@@ -20,7 +20,7 @@ Reiden Rufin : <br>
 - CPU - Ryzen 5 3600<br>
 - Motherboard - AM4 B450 Gaming<br>
 - GPU - AMD Radeon 6800XT<br>
-- RAM - 16GB Corsair Vengeance 2666MHz<br>
+- RAM - 32GB Corsair Vengeance 3200MHz<br>
 - SSD - Samsung 980 NVMe M.2 1TB<br>
 - PSU - Thermaltake 700W GX1 80+ Gold<br>
 - Headset - HyperX Cloud Stinger<br>
