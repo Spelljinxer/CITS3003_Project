@@ -4,7 +4,7 @@
 Team Member 1:	[Reiden Rufin (22986337)](https://github.com/Spelljinxer)  <br>
 Team Member 2:	[Nathan Eden (22960674)](https://github.com/NEDEN249) 
 
-Final Mark: 95%
+Final Mark: <b>95%</b>
 
 #
 
